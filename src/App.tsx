@@ -1,35 +1,97 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+export const App = () => {
+  const [resultInputValue, setResultInputValue] = useState<string>('');
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean>(false);
+  const [feedback, setFeedback] = useState('');
 
+  const [numberA, setNumberA] = useState<number>(0);
+  const [numberB, setNumberB] = useState<number>(0);
+
+  const getRandomNumber = () => {
+    return Math.floor(Math.random() * 9);
+  };
+
+  const checkAnswer = () => {
+    const isCorrect = numberA + numberB === Number(resultInputValue);
+    setFeedback(() => {
+      return isCorrect ? 'Правильный ответ' : 'Неправильный ответ';
+    });
+
+    setIsAnswerCorrect(isCorrect);
+  };
+
+  const nextQuestion = () => {
+    if (isAnswerCorrect) {
+      setNumberA(() => {
+        return getRandomNumber();
+      });
+      setNumberB(() => {
+        return getRandomNumber();
+      });
+
+      setResultInputValue('');
+
+      setIsAnswerCorrect(false);
+    }
+    return;
+  };
+
+  useEffect(() => {
+    const randomNumberA = getRandomNumber();
+    const randomNumberB = getRandomNumber();
+    setNumberA(randomNumberA);
+    setNumberA(randomNumberB);
+  }, []);
+
+  useEffect(() => {
+    nextQuestion();
+  }, [isAnswerCorrect]);
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <header>
+        <h1>Арифметические задачи</h1>
+      </header>
+      <main>
+        <nav>
+          <button className="button" type="button">
+            Сложение
+          </button>
+          <button className="button" type="button">
+            Вычитание
+          </button>
+          <button className="button" type="button">
+            Умножение
+          </button>
+          <button className="button" type="button">
+            Деление
+          </button>
+        </nav>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            checkAnswer();
+          }}>
+          <label htmlFor="result">
+            {numberA} + {numberB}
+            <input
+              autoFocus
+              value={resultInputValue}
+              onChange={(e) => {
+                setResultInputValue(() => {
+                  return e.target.value;
+                });
+              }}
+              type="text"
+              name="result"
+              id="result"
+            />
+          </label>
+          <span>{feedback}</span>
+          <button type="submit">Принять</button>
+        </form>
+      </main>
     </>
-  )
-}
-
-export default App
+  );
+};
