@@ -1,59 +1,84 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
 
 export const App = () => {
+  const inputRef = useRef(null);
+
+  const [maxAvailableValue, setMaxAvailableValue] = useState<number>(10);
   const [resultInputValue, setResultInputValue] = useState<string>('');
-  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean>(false);
-  const [feedback, setFeedback] = useState('');
+  const [message, setMessage] = useState<string>('');
 
   const [numberA, setNumberA] = useState<number>(0);
   const [numberB, setNumberB] = useState<number>(0);
 
-  const getRandomNumber = () => {
-    return Math.floor(Math.random() * 9);
+  const getRandomNumber = (max: number): number => {
+    return Math.floor(Math.random() * (max - max / 10) + 1);
   };
 
-  const checkAnswer = () => {
-    const isCorrect = numberA + numberB === Number(resultInputValue);
-    setFeedback(() => {
+  const getRandomNumberB = (max: number, a: number): number => {
+    return Math.floor(Math.random() * (max - a) + 1);
+  };
+
+  const checkInputLength = () => {
+    if (inputRef.current.value.length === 0) {
+      setMessage(() => {
+        return 'Введите число';
+      });
+    } else {
+      nextQuestion(checkAnswer());
+    }
+  };
+
+  const checkAnswer = (): boolean => {
+    const isCorrect: boolean = numberA + numberB === Number(resultInputValue);
+
+    setMessage(() => {
       return isCorrect ? 'Правильный ответ' : 'Неправильный ответ';
     });
 
-    setIsAnswerCorrect(isCorrect);
+    setResultInputValue(() => {
+      return '';
+    });
+    return isCorrect;
   };
 
-  const nextQuestion = () => {
-    if (isAnswerCorrect) {
+  const nextQuestion = (isCorrect: boolean) => {
+    if (isCorrect) {
+      const a = getRandomNumber(maxAvailableValue);
       setNumberA(() => {
-        return getRandomNumber();
+        return a;
       });
       setNumberB(() => {
-        return getRandomNumber();
+        return getRandomNumberB(maxAvailableValue, a);
       });
 
       setResultInputValue('');
-
-      setIsAnswerCorrect(false);
     }
     return;
   };
 
   useEffect(() => {
-    const randomNumberA = getRandomNumber();
-    const randomNumberB = getRandomNumber();
-    setNumberA(randomNumberA);
-    setNumberA(randomNumberB);
-  }, []);
+    const randomNumberA = getRandomNumber(maxAvailableValue);
+    const randomNumberB = getRandomNumberB(maxAvailableValue, randomNumberA);
 
-  useEffect(() => {
-    nextQuestion();
-  }, [isAnswerCorrect]);
+    setNumberA(randomNumberA);
+    setNumberB(randomNumberB);
+  }, [maxAvailableValue]);
+
   return (
     <>
       <header>
         <h1>Арифметические задачи</h1>
       </header>
       <main>
+        <select
+          onChange={(e) => {
+            setMaxAvailableValue(Number(e.target.value));
+          }}>
+          <option value={10}>результатом будет число меньшее или равное 10</option>
+          <option value={100}>результатом будет число меньшее или равное 100</option>
+          <option value={1000}>результатом будет число меньшее или равное 1000</option>
+        </select>
         <nav>
           <button className="button" type="button">
             Сложение
@@ -68,14 +93,17 @@ export const App = () => {
             Деление
           </button>
         </nav>
+        <span>{message}</span>
+
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            checkAnswer();
+            checkInputLength();
           }}>
           <label htmlFor="result">
             {numberA} + {numberB}
             <input
+              ref={inputRef}
               autoFocus
               value={resultInputValue}
               onChange={(e) => {
@@ -83,12 +111,11 @@ export const App = () => {
                   return e.target.value;
                 });
               }}
-              type="text"
+              type="number"
               name="result"
               id="result"
             />
           </label>
-          <span>{feedback}</span>
           <button type="submit">Принять</button>
         </form>
       </main>
