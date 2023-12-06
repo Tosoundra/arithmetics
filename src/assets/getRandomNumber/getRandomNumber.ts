@@ -1,5 +1,12 @@
-export const generateRandomNumberA = (maxValue: number): number => {
-  return Math.floor(Math.random() * (maxValue - maxValue / 10) + 1);
+export const generateRandomNumberA = (maxValue: number, currentMathAction: string): number => {
+  const getNumberDependedOfOperator = {
+    '+': Math.floor(Math.random() * (maxValue - maxValue / 10) + 1),
+    '-': Math.floor(Math.random() * 9 + 1),
+    '×': Math.floor(Math.random() * 9 + 1),
+    // '÷': generateRandomDivisor(numberA),
+  };
+
+  return getNumberDependedOfOperator[currentMathAction];
 };
 
 export const generateRandomNumberB = (
@@ -10,7 +17,7 @@ export const generateRandomNumberB = (
   const getNumberDependedOfOperator = {
     '+': Math.floor(Math.random() * (maxValue - numberA) + 1),
     '-': Math.floor(Math.random() * numberA),
-    '×': Math.floor(Math.random() * numberA),
+    '×': Math.floor(Math.random() * 9 + 1),
     '÷': generateRandomDivisor(numberA),
   };
 
@@ -20,7 +27,7 @@ export const generateRandomNumberB = (
 const generateRandomDivisor = (numberA: number): number => {
   const arrayOfDivisors = [];
 
-  for (let index = 1; index <= numberA; index++) {
+  for (let index = 1; index <= 10; index++) {
     if (numberA % index === 0) {
       arrayOfDivisors.push(index);
     }

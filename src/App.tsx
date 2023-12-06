@@ -33,7 +33,7 @@ export const App: FC = () => {
   };
 
   const nextQuestion = (): void => {
-    const numberA = generateRandomNumberA(maxAvailableValue);
+    const numberA = generateRandomNumberA(maxAvailableValue, currentArithmeticAction);
     setNumberA(() => {
       return numberA;
     });
@@ -45,7 +45,7 @@ export const App: FC = () => {
   };
 
   useEffect(() => {
-    const numberA = generateRandomNumberA(maxAvailableValue);
+    const numberA = generateRandomNumberA(maxAvailableValue, currentArithmeticAction);
     const numberB = generateRandomNumberB(maxAvailableValue, numberA, currentArithmeticAction);
 
     setNumberA(numberA);
@@ -55,16 +55,16 @@ export const App: FC = () => {
   return (
     <>
       <header>
-        <h1>Генератор арифметических задач</h1>
+        <h1>Онлайн тренажер арифметических задач</h1>
       </header>
       <main>
         <select
           onChange={(e) => {
             setMaxAvailableValue(Number(e.target.value));
           }}>
-          <option value={10}>результатом будет число меньшее или равное 10</option>
-          <option value={100}>результатом будет число меньшее или равное 100</option>
-          <option value={1000}>результатом будет число меньшее или равное 1000</option>
+          <option value={10}>числа в пределах 10</option>
+          <option value={100}>числа в пределах 100</option>
+          <option value={1000}>числа в пределах 1000</option>
         </select>
         <nav>
           <button
