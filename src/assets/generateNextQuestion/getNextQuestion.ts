@@ -1,3 +1,3 @@
-export const getNextQuestion = (params) => {
-  return 
+export const getNextQuestion = () => {
+  return;
 };

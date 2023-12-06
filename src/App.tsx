@@ -8,7 +8,7 @@ import {
 } from './assets/getRandomNumber/getRandomNumber';
 
 export const App: FC = () => {
-  const [currentArithmeticAction, setCurrentArithmeticAction] = useState<string>('+');
+  const [currentArithmeticAction, setCurrentArithmeticAction] = useState<object>({ addition: '+' });
 
   const [maxAvailableValue, setMaxAvailableValue] = useState<number>(10);
 
@@ -18,6 +18,7 @@ export const App: FC = () => {
   const [numberB, setNumberB] = useState<number>(0);
 
   const handleSubmitClick = (userAnswer: string): void => {
+    // @ts-ignore
     const isCorrect = isAnswerCorrect(numberA, numberB, userAnswer, currentArithmeticAction);
 
     if (isCorrect) {
@@ -33,11 +34,12 @@ export const App: FC = () => {
   };
 
   const nextQuestion = (): void => {
+    // @ts-ignore
     const numberA = generateRandomNumberA(maxAvailableValue, currentArithmeticAction);
     setNumberA(() => {
       return numberA;
     });
-
+    // @ts-ignore
     const numberB = generateRandomNumberB(maxAvailableValue, numberA, currentArithmeticAction);
     setNumberB(() => {
       return numberB;
@@ -45,7 +47,10 @@ export const App: FC = () => {
   };
 
   useEffect(() => {
+    // @ts-ignore
+
     const numberA = generateRandomNumberA(maxAvailableValue, currentArithmeticAction);
+    // @ts-ignore
     const numberB = generateRandomNumberB(maxAvailableValue, numberA, currentArithmeticAction);
 
     setNumberA(numberA);
@@ -70,7 +75,9 @@ export const App: FC = () => {
           <button
             onClick={() => {
               setCurrentArithmeticAction(() => {
-                return '+';
+                // return '+';
+                const obj = { addition: '+' };
+                return obj;
               });
             }}
             className="button"
@@ -80,7 +87,9 @@ export const App: FC = () => {
           <button
             onClick={() => {
               setCurrentArithmeticAction(() => {
-                return '-';
+                // return '-';
+                const obj = { subtraction: '-' };
+                return obj;
               });
             }}
             className="button"
@@ -90,7 +99,9 @@ export const App: FC = () => {
           <button
             onClick={() => {
               setCurrentArithmeticAction(() => {
-                return '×';
+                // return '×';
+                const obj = { multiply: '×' };
+                return obj;
               });
             }}
             className="button"

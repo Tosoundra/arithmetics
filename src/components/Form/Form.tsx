@@ -4,7 +4,7 @@ type checkAnswer = (answer: string) => void;
 type setMessage = (message: string) => void;
 
 interface Props {
-  operator: string;
+  operator: object;
   numberA: number;
   numberB: number;
   message: string;
@@ -23,6 +23,8 @@ export const Form: FC<Props> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const [resultInputValue, setResultInputValue] = useState<string>('');
 
+  const current = Object.values(operator);
+  console.log('current', current);
   const isInputFill = () => {
     const isFill: boolean = !!inputRef.current?.value.length;
 
@@ -43,7 +45,7 @@ export const Form: FC<Props> = ({
       }}>
       <span>{message}</span>
       <label htmlFor="result">
-        {numberA} {operator} {numberB}
+        {numberA} {current} {numberB}
         <input
           ref={inputRef}
           autoFocus

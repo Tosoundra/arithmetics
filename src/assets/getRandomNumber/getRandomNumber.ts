@@ -1,33 +1,47 @@
-export const generateRandomNumberA = (maxValue: number, currentMathAction: string): number => {
+interface OperatorNumbers {
+  addition: number;
+  subtraction: number;
+  multiply: number;
+  // '÷': number; // Если нужно добавить деление
+}
+
+export const generateRandomNumberA = (
+  maxValue: number,
+  currentMathAction: OperatorNumbers,
+): number => {
+  const [operator] = Object.keys(currentMathAction) as Array<keyof OperatorNumbers>;
+
   const getNumberDependedOfOperator = {
-    '+': Math.floor(Math.random() * (maxValue - maxValue / 10) + 1),
-    '-': Math.floor(Math.random() * 9 + 1),
-    '×': Math.floor(Math.random() * 9 + 1),
+    addition: Math.floor(Math.random() * (maxValue - maxValue / 10) + 1),
+    subtraction: Math.floor(Math.random() * 9 + 1),
+    multiply: Math.floor(Math.random() * 9 + 1),
     // '÷': generateRandomDivisor(numberA),
   };
 
-  return getNumberDependedOfOperator[currentMathAction];
+  return getNumberDependedOfOperator[operator];
 };
 
 export const generateRandomNumberB = (
   maxValue: number,
   numberA: number,
-  currentMathAction: string,
+  currentMathAction: OperatorNumbers,
 ): number => {
+  const [operator] = Object.keys(currentMathAction) as Array<keyof OperatorNumbers>;
+
   const getNumberDependedOfOperator = {
-    '+': Math.floor(Math.random() * (maxValue - numberA) + 1),
-    '-': Math.floor(Math.random() * numberA),
-    '×': Math.floor(Math.random() * 9 + 1),
+    addition: Math.floor(Math.random() * (maxValue - numberA) + 1),
+    subtraction: Math.floor(Math.random() * numberA),
+    multiply: Math.floor(Math.random() * 9 + 1),
     '÷': generateRandomDivisor(numberA),
   };
 
-  return getNumberDependedOfOperator[currentMathAction];
+  return getNumberDependedOfOperator[operator];
 };
 
 const generateRandomDivisor = (numberA: number): number => {
-  const arrayOfDivisors = [];
+  const arrayOfDivisors: number[] = [];
 
-  for (let index = 1; index <= 10; index++) {
+  for (let index: number = 1; index <= 10; index++) {
     if (numberA % index === 0) {
       arrayOfDivisors.push(index);
     }
