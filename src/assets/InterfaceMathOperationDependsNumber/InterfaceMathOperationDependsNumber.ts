@@ -4,3 +4,5 @@ export interface InterfaceMathOperationDependsNumber {
   '×': number;
   '÷': number;
 }
+
+export type Operator = keyof InterfaceMathOperationDependsNumber;

@@ -1,3 +1,3 @@
-import { Operator } from '../../App';
+import { Operator } from '../InterfaceMathOperationDependsNumber/InterfaceMathOperationDependsNumber';
 
 export const MathOperations: Operator[] = ['+', '-', '×', '÷'];

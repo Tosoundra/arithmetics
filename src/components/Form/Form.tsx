@@ -1,5 +1,4 @@
 import { FC, useRef, useState } from 'react';
-import { association } from '../../assets/correspondenceObject/correspondenceObject';
 
 type checkAnswer = (answer: string) => void;
 type setMessage = (message: string) => void;
@@ -44,7 +43,7 @@ export const Form: FC<Props> = ({
       }}>
       <span>{message}</span>
       <label htmlFor="result">
-        {numberA} {association[currentArithmeticAction]} {numberB}
+        {numberA} {currentArithmeticAction} {numberB}
         <input
           ref={inputRef}
           autoFocus

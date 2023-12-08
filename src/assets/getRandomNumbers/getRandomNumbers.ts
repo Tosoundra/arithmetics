@@ -1,5 +1,4 @@
-import { Operator } from '../../App';
-
+import { Operator } from '../InterfaceMathOperationDependsNumber/InterfaceMathOperationDependsNumber';
 import {
   generateRandomNumberA,
   generateRandomNumberB,

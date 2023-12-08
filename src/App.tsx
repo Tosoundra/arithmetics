@@ -6,23 +6,18 @@ import { Button } from './components/Button/Button';
 import { titleForButtonRus } from './assets/titleForButton/titleForButton';
 import { generateNextQuestion } from './assets/generateNextQuestion/generateNextQuestion';
 import { getRandomNumbers } from './assets/getRandomNumbers/getRandomNumbers';
-import { InterfaceMathOperationDependsNumber } from './assets/InterfaceMathOperationDependsNumber/InterfaceMathOperationDependsNumber';
+import { Operator } from './assets/InterfaceMathOperationDependsNumber/InterfaceMathOperationDependsNumber';
 import { MathOperations } from './assets/MathOperations/MathOperations';
-
-export type Operator = keyof InterfaceMathOperationDependsNumber;
 
 export const App: FC = () => {
   const [currentArithmeticAction, setCurrentArithmeticAction] = useState<Operator>('+');
   const [maxAvailableValue, setMaxAvailableValue] = useState<number>(10);
-
   const [message, setMessage] = useState<string>('');
-
   const [numberA, setNumberA] = useState<number>(0);
   const [numberB, setNumberB] = useState<number>(0);
 
   const handleSubmitClick = (userAnswer: string): void => {
     const isCorrect = isAnswerCorrect(numberA, numberB, userAnswer, currentArithmeticAction);
-
     if (isCorrect) {
       setMessage(() => {
         return 'Правильный ответ';
@@ -63,7 +58,7 @@ export const App: FC = () => {
               <Button
                 title={title}
                 onClick={setCurrentArithmeticAction}
-                arithmeticsOperation={MathOperations[index]}
+                MathOperations={MathOperations[index]}
                 key={index}
               />
             );

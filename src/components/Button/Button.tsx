@@ -1,17 +1,17 @@
 import React, { FC, SetStateAction } from 'react';
-import { Operator } from '../../App';
+import { Operator } from '../../assets/InterfaceMathOperationDependsNumber/InterfaceMathOperationDependsNumber';
 
 interface Props {
   title: string;
   onClick: React.Dispatch<SetStateAction<Operator>>;
-  arithmeticsOperation: Operator;
+  MathOperations: Operator;
 }
 
-export const Button: FC<Props> = ({ title, onClick, arithmeticsOperation }) => {
+export const Button: FC<Props> = ({ title, onClick, MathOperations }) => {
   return (
     <button
       onClick={() => {
-        return onClick(arithmeticsOperation);
+        return onClick(MathOperations);
       }}>
       {title}
     </button>

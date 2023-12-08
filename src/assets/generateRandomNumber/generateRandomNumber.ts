@@ -5,6 +5,7 @@ export const generateRandomNumberA = (
   currentMathAction: keyof InterfaceMathOperationDependsNumber,
 ): number => {
   const getNumberDependedOfOperator: InterfaceMathOperationDependsNumber = {
+    // создать функицю генерирующую 2 случ числа
     '+': Math.floor(
       Math.random() * (maxAvailableValue - maxAvailableValue / 10) + maxAvailableValue / 10,
     ),
