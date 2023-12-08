@@ -2,14 +2,17 @@ import { FC, useEffect, useState } from 'react';
 import './App.css';
 import { Form } from './components/Form/Form';
 import { isAnswerCorrect } from './assets/isAnswerCorrect/isAnswerCorrect';
-import {
-  generateRandomNumberA,
-  generateRandomNumberB,
-} from './assets/getRandomNumber/getRandomNumber';
+import { Button } from './components/Button/Button';
+import { titleForButtonRus } from './assets/titleForButton/titleForButton';
+import { generateNextQuestion } from './assets/generateNextQuestion/generateNextQuestion';
+import { getRandomNumbers } from './assets/getRandomNumbers/getRandomNumbers';
+import { InterfaceMathOperationDependsNumber } from './assets/InterfaceMathOperationDependsNumber/InterfaceMathOperationDependsNumber';
+import { MathOperations } from './assets/MathOperations/MathOperations';
+
+export type Operator = keyof InterfaceMathOperationDependsNumber;
 
 export const App: FC = () => {
-  const [currentArithmeticAction, setCurrentArithmeticAction] = useState<object>({ addition: '+' });
-
+  const [currentArithmeticAction, setCurrentArithmeticAction] = useState<Operator>('+');
   const [maxAvailableValue, setMaxAvailableValue] = useState<number>(10);
 
   const [message, setMessage] = useState<string>('');
@@ -18,14 +21,13 @@ export const App: FC = () => {
   const [numberB, setNumberB] = useState<number>(0);
 
   const handleSubmitClick = (userAnswer: string): void => {
-    // @ts-ignore
     const isCorrect = isAnswerCorrect(numberA, numberB, userAnswer, currentArithmeticAction);
 
     if (isCorrect) {
       setMessage(() => {
         return 'Правильный ответ';
       });
-      nextQuestion();
+      generateNextQuestion([setNumberA, setNumberB], maxAvailableValue, currentArithmeticAction);
     } else {
       setMessage(() => {
         return 'Неправильный ответ';
@@ -33,25 +35,8 @@ export const App: FC = () => {
     }
   };
 
-  const nextQuestion = (): void => {
-    // @ts-ignore
-    const numberA = generateRandomNumberA(maxAvailableValue, currentArithmeticAction);
-    setNumberA(() => {
-      return numberA;
-    });
-    // @ts-ignore
-    const numberB = generateRandomNumberB(maxAvailableValue, numberA, currentArithmeticAction);
-    setNumberB(() => {
-      return numberB;
-    });
-  };
-
   useEffect(() => {
-    // @ts-ignore
-
-    const numberA = generateRandomNumberA(maxAvailableValue, currentArithmeticAction);
-    // @ts-ignore
-    const numberB = generateRandomNumberB(maxAvailableValue, numberA, currentArithmeticAction);
+    const [numberA, numberB] = getRandomNumbers(maxAvailableValue, currentArithmeticAction);
 
     setNumberA(numberA);
     setNumberB(numberB);
@@ -64,6 +49,7 @@ export const App: FC = () => {
       </header>
       <main>
         <select
+          disabled={currentArithmeticAction !== '+' && currentArithmeticAction !== '-'}
           onChange={(e) => {
             setMaxAvailableValue(Number(e.target.value));
           }}>
@@ -72,55 +58,19 @@ export const App: FC = () => {
           <option value={1000}>числа в пределах 1000</option>
         </select>
         <nav>
-          <button
-            onClick={() => {
-              setCurrentArithmeticAction(() => {
-                // return '+';
-                const obj = { addition: '+' };
-                return obj;
-              });
-            }}
-            className="button"
-            type="button">
-            Сложение
-          </button>
-          <button
-            onClick={() => {
-              setCurrentArithmeticAction(() => {
-                // return '-';
-                const obj = { subtraction: '-' };
-                return obj;
-              });
-            }}
-            className="button"
-            type="button">
-            Вычитание
-          </button>
-          <button
-            onClick={() => {
-              setCurrentArithmeticAction(() => {
-                // return '×';
-                const obj = { multiply: '×' };
-                return obj;
-              });
-            }}
-            className="button"
-            type="button">
-            Умножение
-          </button>
-          <button
-            onClick={() => {
-              setCurrentArithmeticAction(() => {
-                return '÷';
-              });
-            }}
-            className="button"
-            type="button">
-            Деление
-          </button>
+          {titleForButtonRus.map((title, index) => {
+            return (
+              <Button
+                title={title}
+                onClick={setCurrentArithmeticAction}
+                arithmeticsOperation={MathOperations[index]}
+                key={index}
+              />
+            );
+          })}
         </nav>
         <Form
-          operator={currentArithmeticAction}
+          currentArithmeticAction={currentArithmeticAction}
           numberA={numberA}
           numberB={numberB}
           handleSubmitClick={handleSubmitClick}

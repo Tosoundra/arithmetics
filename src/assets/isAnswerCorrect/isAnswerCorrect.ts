@@ -1,23 +1,28 @@
-interface OperatorNumbers {
-  addition: number;
-  subtraction: number;
-  multiply: number;
-  // '÷': number; // Если нужно добавить деление
-}
+// interface OperatorNumbers {
+//   addition: boolean;
+//   subtraction: boolean;
+//   multiply: boolean;
+//   divide: boolean;
+// }
+
+import { InterfaceMathOperationDependsNumber } from '../InterfaceMathOperationDependsNumber/InterfaceMathOperationDependsNumber';
 
 export const isAnswerCorrect = (
   numberA: number,
   numberB: number,
   userAnswer: string,
-  currentMathAction: OperatorNumbers,
+  currentMathAction: keyof InterfaceMathOperationDependsNumber,
 ): boolean => {
-  const [operator] = Object.keys(currentMathAction) as Array<keyof OperatorNumbers>;
-
-  const mathActions = {
-    addition: numberA + numberB === Number(userAnswer),
-    subtraction: numberA - numberB === Number(userAnswer),
-    multiply: numberA * numberB === Number(userAnswer),
-    // '÷': numberA / numberB === Number(userAnswer),
+  const mathActions: InterfaceMathOperationDependsNumber = {
+    // addition: numberA + numberB === Number(userAnswer),
+    // subtraction: numberA - numberB === Number(userAnswer),
+    // multiply: numberA * numberB === Number(userAnswer),
+    // divide: numberA / numberB === Number(userAnswer),
+    '+': numberA + numberB,
+    '-': numberA - numberB,
+    '×': numberA * numberB,
+    '÷': numberA / numberB,
   };
-  return mathActions[operator];
+
+  return mathActions[currentMathAction] === Number(userAnswer);
 };

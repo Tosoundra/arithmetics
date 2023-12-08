@@ -1,10 +1,11 @@
 import { FC, useRef, useState } from 'react';
+import { association } from '../../assets/correspondenceObject/correspondenceObject';
 
 type checkAnswer = (answer: string) => void;
 type setMessage = (message: string) => void;
 
 interface Props {
-  operator: object;
+  currentArithmeticAction: string;
   numberA: number;
   numberB: number;
   message: string;
@@ -13,7 +14,7 @@ interface Props {
 }
 
 export const Form: FC<Props> = ({
-  operator,
+  currentArithmeticAction,
   numberA,
   numberB,
   message,
@@ -23,8 +24,6 @@ export const Form: FC<Props> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const [resultInputValue, setResultInputValue] = useState<string>('');
 
-  const current = Object.values(operator);
-  console.log('current', current);
   const isInputFill = () => {
     const isFill: boolean = !!inputRef.current?.value.length;
 
@@ -45,7 +44,7 @@ export const Form: FC<Props> = ({
       }}>
       <span>{message}</span>
       <label htmlFor="result">
-        {numberA} {current} {numberB}
+        {numberA} {association[currentArithmeticAction]} {numberB}
         <input
           ref={inputRef}
           autoFocus
@@ -56,6 +55,7 @@ export const Form: FC<Props> = ({
             });
           }}
           type="number"
+          min={0}
           name="result"
           id="result"
         />
