@@ -22,14 +22,6 @@ export const generateRandomNumberA = (
   return getNumberDependedOfOperator[currentMathAction];
 };
 
-const generateRandomNumber = (options: {
-  maxAvailableValue: number;
-  currentMathAction: Operator;
-}): number => {
-  const { maxAvailableValue, currentMathAction } = options;
-  return Math.floor(Math.random() * (maxAvailableValue - maxAvailableValue / 10));
-};
-
 export const generateRandomNumberB = (
   maxAvailableValue: number,
   numberA: number,
