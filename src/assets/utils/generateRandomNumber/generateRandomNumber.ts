@@ -1,33 +1,42 @@
-import { InterfaceMathOperationDependsNumber } from '../InterfaceMathOperationDependsNumber/InterfaceMathOperationDependsNumber';
+import {
+  InterfaceMathOperationDependsNumber,
+  Operator,
+} from '../InterfaceMathOperationDependsNumber/InterfaceMathOperationDependsNumber';
 
 export const generateRandomNumberA = (
   maxAvailableValue: number,
-  currentMathAction: keyof InterfaceMathOperationDependsNumber,
+  currentMathAction: Operator,
 ): number => {
   const getNumberDependedOfOperator: InterfaceMathOperationDependsNumber = {
-    // создать функицю генерирующую 2 случ числа
+    // создать функцию генерирующую 2 случ числа
     '+': Math.floor(
       Math.random() * (maxAvailableValue - maxAvailableValue / 10) + maxAvailableValue / 10,
     ),
     '-': Math.floor(
-      Math.random() * (maxAvailableValue - maxAvailableValue / 10) + maxAvailableValue / 10,
+      Math.random() * (maxAvailableValue - maxAvailableValue / 10) + maxAvailableValue / 10 + 1,
     ),
-    '×': Math.floor(Math.random() * 9 + 1),
+    '×': Math.floor(Math.random() * (maxAvailableValue - maxAvailableValue / 10) + 1),
     '÷': Math.floor(Math.random() * 9 + 2) * Math.floor(Math.random() * 9 + 1),
   };
 
   return getNumberDependedOfOperator[currentMathAction];
 };
 
+const generateRandomNumber = (options: {
+  maxAvailableValue: number;
+  currentMathAction: Operator;
+}): number => {
+  const { maxAvailableValue, currentMathAction } = options;
+  return Math.floor(Math.random() * (maxAvailableValue - maxAvailableValue / 10));
+};
+
 export const generateRandomNumberB = (
   maxAvailableValue: number,
   numberA: number,
-  currentMathAction: keyof InterfaceMathOperationDependsNumber,
+  currentMathAction: Operator,
 ): number => {
   const getNumberDependedOfOperator: InterfaceMathOperationDependsNumber = {
-    '+': Math.floor(
-      Math.random() * (maxAvailableValue - maxAvailableValue / 10) + maxAvailableValue / 10,
-    ),
+    '+': Math.floor(Math.random() * (maxAvailableValue - numberA) + 1),
     '-': Math.floor(Math.random() * numberA + 1),
     '×': Math.floor(Math.random() * 9 + 1),
     '÷': generateRandomDivisor(numberA),

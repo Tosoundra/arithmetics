@@ -1,0 +1,13 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .form__warn-message {
+    color: green;
+  }
+
+  .form__label {
+    display: block;
+  }
+}

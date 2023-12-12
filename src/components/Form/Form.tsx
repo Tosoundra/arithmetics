@@ -1,4 +1,5 @@
 import { FC, useRef, useState } from 'react';
+import './form.css';
 
 type checkAnswer = (answer: string) => void;
 type setMessage = (message: string) => void;
@@ -41,8 +42,8 @@ export const Form: FC<Props> = ({
         e.preventDefault();
         isInputFill();
       }}>
-      <span>{message}</span>
-      <label htmlFor="result">
+      <span className="form__warn-message">{message}</span>
+      <label className='form__label' htmlFor="result">
         {numberA} {currentArithmeticAction} {numberB}
         <input
           ref={inputRef}
