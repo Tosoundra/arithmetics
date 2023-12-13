@@ -29,7 +29,7 @@ export const generateRandomNumberB = (
 ): number => {
   const getNumberDependedOfOperator: InterfaceMathOperationDependsNumber = {
     '+': Math.floor(Math.random() * (maxAvailableValue - numberA) + 1),
-    '-': Math.floor(Math.random() * numberA + 1),
+    '-': Math.floor((Math.random() * numberA) / 2 + (Math.random() * numberA) / 2 + 1),
     '×': Math.floor(Math.random() * 9 + 1),
     '÷': generateRandomDivisor(numberA),
   };
