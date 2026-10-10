@@ -36,8 +36,16 @@ jobs:
       - name: Test arithmetic core
         working-directory: ios
         run: swift test
+      - name: Compile native app and test bundles
+        working-directory: ios
+        run: |
+          xcodebuild build-for-testing \
+            -project Arithmetics.xcodeproj -scheme Arithmetics \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO
       - name: Choose an iPhone simulator
         id: simulator
+        timeout-minutes: 8
         run: |
           SIMULATOR_ID=$(xcrun simctl list devices available -j | python3 -c '
           import json, sys
@@ -53,7 +61,7 @@ jobs:
       - name: Build and test native iOS app
         working-directory: ios
         run: |
-          xcodebuild test \
+          xcodebuild test-without-building \
             -project Arithmetics.xcodeproj -scheme Arithmetics \
             -destination 'platform=iOS Simulator,id=${{ steps.simulator.outputs.id }}' \
             -derivedDataPath build/DerivedData \

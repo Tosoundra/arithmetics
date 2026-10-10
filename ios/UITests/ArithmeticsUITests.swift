@@ -70,9 +70,9 @@ final class ArithmeticsUITests: XCTestCase {
         }
     }
 
-    func testRussianLocalizationAndLargeText() {
+    func testRussianLocalizationDarkModeAndLargeText() {
         app.terminate()
-        app.launchArguments = ["--ui-testing", "-AppleLanguages", "(ru)", "-AppleLocale", "ru_RU", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launchArguments = ["--ui-testing", "--dark-mode", "-AppleLanguages", "(ru)", "-AppleLocale", "ru_RU", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
         app.launch()
         XCTAssertTrue(app.staticTexts["Арифметика"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.buttons["startTraining"].exists)

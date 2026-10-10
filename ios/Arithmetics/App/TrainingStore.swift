@@ -2,7 +2,7 @@ import SwiftUI
 
 @MainActor
 final class TrainingStore: ObservableObject {
-    @Published private(set) var snapshot: AppSnapshot
+    @Published private(set) var snapshot = AppSnapshot()
     @Published private(set) var lastResult: TrainingResult?
     @Published private(set) var storageWarning = false
     private let defaults: UserDefaults

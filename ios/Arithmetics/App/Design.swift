@@ -1,7 +1,8 @@
 import SwiftUI
 
 enum Palette {
-    static let accent = Color(red: 0.08, green: 0.40, blue: 0.34)
+    static let accent = Color("Accent")
+    static let onAccent = Color("OnAccent")
     static let background = Color("Canvas")
     static let ink = Color.primary
 }
@@ -19,7 +20,7 @@ struct PrimaryButton: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
     func makeBody(configuration: Configuration) -> some View {
         configuration.label.font(.headline).padding(.vertical, 17).frame(maxWidth: .infinity)
-            .foregroundStyle(.white)
+            .foregroundStyle(Palette.onAccent)
             .background(Palette.accent.opacity(isEnabled ? 1 : 0.35), in: RoundedRectangle(cornerRadius: 18))
             .opacity(configuration.isPressed ? 0.8 : 1)
     }

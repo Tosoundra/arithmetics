@@ -95,7 +95,7 @@ struct HomeView: View {
                 Text(operation.symbol).font(.system(size: 36, weight: .medium, design: .rounded)).accessibilityHidden(true)
                 Text(LocalizedStringKey(operation.titleKey)).font(.subheadline.weight(.semibold))
             }.frame(maxWidth: .infinity, alignment: .leading).padding(18)
-                .foregroundStyle(selected ? Color.white : Palette.ink)
+                .foregroundStyle(selected ? Palette.onAccent : Palette.ink)
                 .background(selected ? Palette.accent : Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 22))
         }.buttonStyle(.plain).accessibilityIdentifier("operation-\(operation.rawValue)")
             .accessibilityAddTraits(selected ? .isSelected : [])
