@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Scheme LastUpgradeVersion="2600" version="1.7">
+  <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
+    <BuildActionEntries>
+      <BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES">
+        <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="A3658F6909AC2D20073025E9" BuildableName="Arithmetics.app" BlueprintName="Arithmetics" ReferencedContainer="container:Arithmetics.xcodeproj" />
+      </BuildActionEntry>
+    </BuildActionEntries>
+  </BuildAction>
+  <TestAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES">
+    <Testables>
+      <TestableReference skipped="NO" parallelizable="NO">
+        <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="AD1FCC3AB50861711335000C" BuildableName="ArithmeticsTests.xctest" BlueprintName="ArithmeticsTests" ReferencedContainer="container:Arithmetics.xcodeproj" />
+      </TestableReference>
+      <TestableReference skipped="NO" parallelizable="NO">
+        <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="070685B979F9D99080841BA0" BuildableName="ArithmeticsUITests.xctest" BlueprintName="ArithmeticsUITests" ReferencedContainer="container:Arithmetics.xcodeproj" />
+      </TestableReference>
+    </Testables>
+  </TestAction>
+  <LaunchAction buildConfiguration="Debug" useCustomWorkingDirectory="NO" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" launchStyle="0" allowLocationSimulation="YES">
+    <BuildableProductRunnable runnableDebuggingMode="0">
+      <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="A3658F6909AC2D20073025E9" BuildableName="Arithmetics.app" BlueprintName="Arithmetics" ReferencedContainer="container:Arithmetics.xcodeproj" />
+    </BuildableProductRunnable>
+  </LaunchAction>
+  <ProfileAction buildConfiguration="Release" useCustomWorkingDirectory="NO" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES">
+    <BuildableProductRunnable runnableDebuggingMode="0">
+      <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="A3658F6909AC2D20073025E9" BuildableName="Arithmetics.app" BlueprintName="Arithmetics" ReferencedContainer="container:Arithmetics.xcodeproj" />
+    </BuildableProductRunnable>
+  </ProfileAction>
+  <AnalyzeAction buildConfiguration="Debug" />
+  <ArchiveAction buildConfiguration="Release" revealArchiveInOrganizer="YES" />
+</Scheme>

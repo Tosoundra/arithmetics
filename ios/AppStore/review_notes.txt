@@ -1,0 +1,5 @@
+Arithmetics is a native SwiftUI mental arithmetic trainer. No account or login is required. All training, answer checking, saved progress and history work offline. There are no advertisements, purchases, third-party analytics SDKs or developer-operated servers.
+
+Select an operation on the Practice tab, choose the number range (addition/subtraction) and training length, then tap Start training. Enter an answer on the built-in number pad and tap Check answer. An incorrect answer keeps the same problem. Show answer marks the problem as skipped. Next problem advances the training; after the final question, See results shows the summary. The close button offers Pause and save or Finish training. Results appear on the Progress tab. Local history can be deleted from About.
+
+Multiplication and division use the 1–10 table. Division always has an integer result. Subtraction results are positive. UI languages: English and Russian. The app supports iPhone on iOS 17 and later.

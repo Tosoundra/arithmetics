@@ -1,0 +1,98 @@
+name: iOS build and tests
+
+on:
+  pull_request:
+    paths:
+      - 'ios/**'
+      - '.github/workflows/ios.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ios:
+    runs-on: macos-26
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode 26
+        run: |
+          XCODE_PATH=$(python3 - <<'PY'
+          import pathlib, re
+          candidates = [p for p in pathlib.Path('/Applications').glob('Xcode_26*.app') if 'beta' not in p.name.lower() and 'rc' not in p.name.lower()]
+          if not candidates:
+              raise SystemExit('Xcode 26 is required; update the runner image.')
+          print(max(candidates, key=lambda p: tuple(int(n) for n in re.findall(r'\d+', p.name))))
+          PY
+          )
+          sudo xcode-select -s "$XCODE_PATH/Contents/Developer"
+          sudo xcodebuild -runFirstLaunch
+          xcodebuild -version
+          xcodebuild -showsdks
+      - name: Test arithmetic core
+        working-directory: ios
+        run: swift test
+      - name: Compile native app and test bundles
+        working-directory: ios
+        run: |
+          xcodebuild build-for-testing \
+            -project Arithmetics.xcodeproj -scheme Arithmetics \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO
+      - name: Choose an iPhone simulator
+        id: simulator
+        timeout-minutes: 8
+        run: |
+          SIMULATOR_ID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, re, sys
+          data=json.load(sys.stdin)
+          runtimes=[(runtime,items) for runtime,items in data["devices"].items() if "iOS-26" in runtime and any("iPhone" in d["name"] and d.get("isAvailable",False) for d in items)]
+          if not runtimes: raise SystemExit("No available iOS 26 iPhone simulator")
+          runtime,items=max(runtimes,key=lambda item: tuple(int(n) for n in re.findall(r"\d+",item[0])))
+          devices=[d for d in items if "iPhone" in d["name"] and d.get("isAvailable",False)]
+          preferred=[d for d in devices if re.fullmatch(r"iPhone \d+ Pro", d["name"])]
+          print(sorted(preferred or devices,key=lambda d: d["name"],reverse=True)[0]["udid"])
+          ')
+          echo "id=$SIMULATOR_ID" >> "$GITHUB_OUTPUT"
+          xcrun simctl boot "$SIMULATOR_ID" || true
+          xcrun simctl bootstatus "$SIMULATOR_ID" -b
+          xcrun simctl status_bar "$SIMULATOR_ID" override --time '9:41' --dataNetwork wifi --wifiMode active --wifiBars 3 --batteryState charged --batteryLevel 100
+      - name: Build and test native iOS app
+        working-directory: ios
+        run: |
+          xcodebuild test-without-building \
+            -project Arithmetics.xcodeproj -scheme Arithmetics \
+            -destination 'platform=iOS Simulator,id=${{ steps.simulator.outputs.id }}' \
+            -derivedDataPath build/DerivedData \
+            -resultBundlePath build/TestResults.xcresult \
+            -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+      - name: Validate unsigned release archive
+        working-directory: ios
+        run: |
+          xcodebuild archive \
+            -project Arithmetics.xcodeproj -scheme Arithmetics -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath build/Arithmetics.xcarchive \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''
+      - name: Export UI test screenshots
+        if: always()
+        working-directory: ios
+        run: |
+          if [ -d build/TestResults.xcresult ]; then
+            xcrun xcresulttool export attachments --path build/TestResults.xcresult --output-path build/Screenshots
+          fi
+      - name: Upload validation artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-validation
+          path: |
+            ios/build/TestResults.xcresult
+            ios/build/Screenshots
+            ios/build/Arithmetics.xcarchive
+          if-no-files-found: ignore
+          retention-days: 14
