@@ -43,8 +43,6 @@ struct HomeView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Label("home.resume.title", systemImage: "arrow.clockwise").font(.headline)
                             Text(LocalizedStringKey(session.settings.operation.titleKey)).foregroundStyle(.secondary)
-                            Button("action.resume") { showTraining = true }
-                                .buttonStyle(PrimaryButton()).accessibilityIdentifier("resumeTraining")
                         }
                     }
                 }
@@ -79,13 +77,24 @@ struct HomeView: View {
                         }.pickerStyle(.segmented).accessibilityIdentifier("trainingLength")
                     }
                 }.disabled(store.snapshot.activeSession != nil)
-                Button("action.start") { store.start(); showTraining = true }
-                    .buttonStyle(PrimaryButton()).disabled(store.snapshot.activeSession != nil)
-                    .accessibilityIdentifier("startTraining")
                 Label("home.offline", systemImage: "checkmark.shield").font(.caption)
                     .foregroundStyle(.secondary).frame(maxWidth: .infinity)
             }.padding(20).frame(maxWidth: 620).frame(maxWidth: .infinity)
-        }.background(Palette.background).navigationTitle("app.name").navigationBarTitleDisplayMode(.inline)
+        }.background(Palette.background)
+            .safeAreaInset(edge: .bottom, spacing: 0) { primaryAction }
+            .navigationTitle("app.name").navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var primaryAction: some View {
+        let hasSession = store.snapshot.activeSession != nil
+        return Button(LocalizedStringKey(hasSession ? "action.resume" : "action.start")) {
+            if store.snapshot.activeSession == nil { store.start() }
+            showTraining = true
+        }.buttonStyle(PrimaryButton())
+            .accessibilityIdentifier(hasSession ? "resumeTraining" : "startTraining")
+            .padding(.horizontal, 20).padding(.vertical, 12)
+            .frame(maxWidth: 620).frame(maxWidth: .infinity)
+            .background(Palette.background)
     }
 
     private func operationButton(_ operation: ArithmeticOperation) -> some View {

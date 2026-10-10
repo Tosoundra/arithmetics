@@ -94,6 +94,8 @@ final class ArithmeticsUITests: XCTestCase {
             app.launchArguments = ["--ui-testing", "-AppleLanguages", "(\(language))", "-AppleLocale", language == "ru" ? "ru_RU" : "en_US"]
             app.launch()
             XCTAssertTrue(app.buttons["startTraining"].waitForExistence(timeout: 10))
+            XCTAssertTrue(app.buttons["startTraining"].isHittable)
+            XCTAssertLessThanOrEqual(app.buttons["startTraining"].frame.maxY, app.tabBars.firstMatch.frame.minY)
             attach("store-\(language)-01-home")
             tapVisible(app.buttons["startTraining"])
             for index in 0..<10 {
