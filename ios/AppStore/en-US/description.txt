@@ -1,0 +1,13 @@
+Arithmetics is a simple trainer for mental math practice.
+
+Choose addition, subtraction, multiplication or division. Solve 10 or 20 problems, or practice in free mode.
+
+• Addition and subtraction with ranges up to 20, 100 or 1000.
+• Multiplication and division using the 1–10 table, with whole-number answers.
+• A built-in number pad and instant answer checking.
+• Retry after a mistake or reveal an answer when you need help.
+• Training summaries with solved problems, wrong attempts, skips and first-try accuracy.
+• Your last 100 training results and automatic saving of unfinished practice.
+• Light and dark appearances. English and Russian interfaces.
+
+Works without an internet connection. No ads, purchases or account. Settings and results stay on your device.
