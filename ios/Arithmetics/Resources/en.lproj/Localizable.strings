@@ -74,7 +74,7 @@
 "about.privacy.title" = "Privacy and support";
 "about.privacy.link" = "Privacy policy";
 "about.support" = "Contact support";
-"privacy.text" = "Arithmetics 1.0\n\nThe app works offline. It does not collect or transmit personal data, answers, identifiers, location, or usage analytics to the developer. It includes no advertising or third-party analytics SDKs.\n\nYour selected settings, unfinished training and last 100 results are stored locally on your device. You can delete them using Reset progress. Device backups are managed by Apple and your device settings.\n\nThe support link opens GitHub outside the app. Information you choose to send to support is handled by that service. Do not post personal data in public issues.\n\nSupport: https://github.com/Tosoundra/arithmetics/issues";
+"privacy.text" = "Arithmetics 1.0\n\nThe app works offline. It does not collect or transmit personal data, answers, identifiers, location, or usage analytics to the developer. It includes no advertising or third-party analytics SDKs.\n\nYour selected settings, unfinished training and last 100 results are stored locally on your device. You can delete saved results and unfinished training using Reset progress. Device backups are managed by Apple and your device settings.\n\nThe support link opens GitHub outside the app. Information you choose to send to support is handled by that service. Do not post personal data in public issues.\n\nSupport: https://github.com/Tosoundra/arithmetics/issues";
 "action.reset" = "Reset progress";
 "reset.hint" = "Deletes saved results and any unfinished training.";
 "reset.title" = "Delete your progress?";

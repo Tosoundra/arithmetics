@@ -1,16 +1,20 @@
 import XCTest
 
 final class ArithmeticsUITests: XCTestCase {
-    private var app: XCUIApplication!
+    @MainActor private var app: XCUIApplication!
 
     override func setUpWithError() throws {
         continueAfterFailure = false
+    }
+
+    @MainActor private func launchFreshApp() {
         app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
     }
 
-    func testWrongAnswerRetryPauseResumeAndHistory() {
+    @MainActor func testWrongAnswerRetryPauseResumeAndHistory() {
+        launchFreshApp()
         XCTAssertTrue(app.buttons["startTraining"].waitForExistence(timeout: 10))
         attach("01-home")
         app.buttons["startTraining"].tap()
@@ -47,7 +51,8 @@ final class ArithmeticsUITests: XCTestCase {
         XCTAssertTrue(app.buttons["historyRow"].waitForExistence(timeout: 5))
     }
 
-    func testAllOperationsHaveNativeInputAndRevealIsASkip() {
+    @MainActor func testAllOperationsHaveNativeInputAndRevealIsASkip() {
+        launchFreshApp()
         let cases: [(String, String, String)] = [
             ("addition", "2 + 3", "5"), ("subtraction", "8 − 3", "5"),
             ("multiplication", "4 × 3", "12"), ("division", "12 ÷ 3", "4")
@@ -62,7 +67,9 @@ final class ArithmeticsUITests: XCTestCase {
             XCTAssertTrue(app.staticTexts["correctFeedback"].waitForExistence(timeout: 3))
             app.buttons["nextProblem"].tap()
             app.buttons["revealAnswer"].tap()
-            app.buttons["Show answer"].lastMatch.tap()
+            let revealButton = app.buttons.matching(identifier: "Show answer").allElementsBoundByIndex.last
+            XCTAssertNotNil(revealButton)
+            revealButton?.tap()
             XCTAssertTrue(app.staticTexts["revealedFeedback"].waitForExistence(timeout: 3))
             app.buttons["closeTraining"].tap()
             app.buttons["Finish training"].tap()
@@ -70,7 +77,8 @@ final class ArithmeticsUITests: XCTestCase {
         }
     }
 
-    func testRussianLocalizationDarkModeAndLargeText() {
+    @MainActor func testRussianLocalizationDarkModeAndLargeText() {
+        launchFreshApp()
         app.terminate()
         app.launchArguments = ["--ui-testing", "--dark-mode", "-AppleLanguages", "(ru)", "-AppleLocale", "ru_RU", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
         app.launch()
@@ -79,7 +87,8 @@ final class ArithmeticsUITests: XCTestCase {
         attach("05-russian-large-text")
     }
 
-    func testCompleteTrainingAndCaptureBothLanguages() {
+    @MainActor func testCompleteTrainingAndCaptureBothLanguages() {
+        launchFreshApp()
         for language in ["en", "ru"] {
             app.terminate()
             app.launchArguments = ["--ui-testing", "-AppleLanguages", "(\(language))", "-AppleLocale", language == "ru" ? "ru_RU" : "en_US"]
@@ -106,7 +115,7 @@ final class ArithmeticsUITests: XCTestCase {
         }
     }
 
-    private func tapVisible(_ element: XCUIElement) {
+    @MainActor private func tapVisible(_ element: XCUIElement) {
         for _ in 0..<3 {
             if element.isHittable { break }
             app.scrollViews.firstMatch.swipeUp()
@@ -114,7 +123,7 @@ final class ArithmeticsUITests: XCTestCase {
         element.tap()
     }
 
-    private func attach(_ name: String) {
+    @MainActor private func attach(_ name: String) {
         let screenshot = XCTAttachment(screenshot: app.screenshot())
         screenshot.name = name
         screenshot.lifetime = .keepAlways
