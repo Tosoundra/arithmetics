@@ -79,6 +79,41 @@ final class ArithmeticsUITests: XCTestCase {
         attach("05-russian-large-text")
     }
 
+    func testCompleteTrainingAndCaptureBothLanguages() {
+        for language in ["en", "ru"] {
+            app.terminate()
+            app.launchArguments = ["--ui-testing", "-AppleLanguages", "(\(language))", "-AppleLocale", language == "ru" ? "ru_RU" : "en_US"]
+            app.launch()
+            XCTAssertTrue(app.buttons["startTraining"].waitForExistence(timeout: 10))
+            attach("store-\(language)-01-home")
+            tapVisible(app.buttons["startTraining"])
+            for index in 0..<10 {
+                XCTAssertTrue(app.staticTexts["problemExpression"].waitForExistence(timeout: 5))
+                let operands = app.staticTexts["problemExpression"].label.split(separator: " ")
+                XCTAssertEqual(operands.count, 3)
+                let expected = Int(operands[0])! + Int(operands[2])!
+                for digit in String(expected) { app.buttons["digit-\(digit)"].tap() }
+                if index == 0 { attach("store-\(language)-02-practice") }
+                tapVisible(app.buttons["checkAnswer"])
+                XCTAssertTrue(app.staticTexts["correctFeedback"].waitForExistence(timeout: 3))
+                app.buttons["nextProblem"].tap()
+            }
+            XCTAssertTrue(app.buttons["trainAgain"].waitForExistence(timeout: 5))
+            XCTAssertTrue(app.staticTexts["100%"].exists)
+            attach("store-\(language)-03-results")
+            app.buttons["trainAgain"].tap()
+            XCTAssertTrue(app.staticTexts["problemExpression"].waitForExistence(timeout: 5))
+        }
+    }
+
+    private func tapVisible(_ element: XCUIElement) {
+        for _ in 0..<3 {
+            if element.isHittable { break }
+            app.scrollViews.firstMatch.swipeUp()
+        }
+        element.tap()
+    }
+
     private func attach(_ name: String) {
         let screenshot = XCTAttachment(screenshot: app.screenshot())
         screenshot.name = name
